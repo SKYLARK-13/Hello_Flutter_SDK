@@ -22,6 +22,9 @@ class ChatWidget extends StatefulWidget {
   final String? country;
   final String? city;
   final String? region;
+  final ButtonStyle? buttonStyle;
+  final VoidCallback onLaunchWidget;
+  final VoidCallback onHideWidget;
 
   ChatWidget({
     super.key,
@@ -39,6 +42,9 @@ class ChatWidget extends StatefulWidget {
     this.country,
     this.city,
     this.region,
+    this.buttonStyle,
+    required this.onLaunchWidget,
+    required this.onHideWidget,
   });
 
   @override
@@ -93,6 +99,7 @@ class ChatWidgetState extends State<ChatWidget> with WidgetsBindingObserver {
     return WillPopScope(
       onWillPop: () async {
         if (showView) {
+          widget.onHideWidget();
           setState(() {
             showView = false;
           });
@@ -162,17 +169,19 @@ class ChatWidgetState extends State<ChatWidget> with WidgetsBindingObserver {
           floatingActionButton: Visibility(
             visible: !showView,
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(80, 45),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                backgroundColor: widget.widgetColor,
-              ),
+              style: widget.buttonStyle ??
+                  ElevatedButton.styleFrom(
+                    minimumSize: const Size(80, 45),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    backgroundColor: widget.widgetColor,
+                  ),
               onPressed: () async {
                 setState(() {
                   _isWidgetLoaded = true;
                   showView = !showView;
                 });
+                widget.onLaunchWidget();
                 if (showView) {
                   await changeStatusBarColor();
                 } else {
@@ -293,6 +302,7 @@ class ChatWidgetState extends State<ChatWidget> with WidgetsBindingObserver {
       setState(() {
         showView = false;
       });
+      widget.onHideWidget();
       if (showView) {
         await changeStatusBarColor();
       } else {

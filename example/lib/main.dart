@@ -22,14 +22,22 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  double viewHeight = 100;
+  double viewWidth = 130;
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             scrolledUnderElevation: 0,
             title: const Text('Flutter Hello SDK Example'),
@@ -52,33 +60,92 @@ class MyHomePage extends StatelessWidget {
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.45,
-                  child: GridView.count(
-                    shrinkWrap: true,
+                  child: GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    children: List.generate(4, (index) {
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                    ),
+                    itemCount: 4,
+                    itemBuilder: (context, index) {
                       return Container(
                         color: Colors.deepPurple[100 * (index % 9)],
                         child: Center(
                           child: Text('Item $index'),
                         ),
                       );
-                    }),
+                    },
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Sample GridView',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.45,
+                  child: GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                    ),
+                    itemCount: 4,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        color: Colors.deepPurple[100 * (index % 9)],
+                        child: Center(
+                          child: Text('Item $index'),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
             ),
           ),
         ),
-        ChatWidget(
-          widgetToken: "ec5d6",
-          uniqueId: "AA_94bb_0jd",
-          name: "John Doe",
-          mail: "johndoe@example.com",
-          number: "+1234567890",
-          widgetColor: const Color.fromARGB(255, 209, 58, 12),
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: SizedBox(
+            height: viewHeight,
+            width: viewWidth,
+            child: Overlay(
+              initialEntries: [
+                OverlayEntry(
+                  builder: (context) => ChatWidget(
+                    widgetToken: "ec5d6",
+                    uniqueId: "AA_94bb_0jd",
+                    name: "John Doe",
+                    mail: "johndoe@example.com",
+                    number: "+1234567890",
+                    widgetColor: const Color.fromARGB(255, 209, 58, 12),
+                    onLaunchWidget: () {
+                      // set the view hight/width to full hight/width of the screen
+                      setState(() {
+                        viewHeight = MediaQuery.of(context).size.height;
+                        viewWidth = MediaQuery.of(context).size.width;
+                      });
+                    },
+                    onHideWidget: () {
+                      // set the button hight/width on the screen
+                      setState(() {
+                        viewHeight = 100;
+                        viewWidth = 130;
+                      });
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
       ],
     );

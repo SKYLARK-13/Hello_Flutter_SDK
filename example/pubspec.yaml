@@ -32,6 +32,7 @@ dependencies:
     sdk: flutter
   flutter_hello_sdk:
     path: /Users/mac/development/playground/flutter_hello_sdk
+  # flutter_hello_sdk: ^0.0.1
 
 
   # The following adds the Cupertino Icons font to your application.
