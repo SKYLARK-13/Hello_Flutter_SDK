@@ -1,44 +1,17 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Flutter Chat Widget by MSG91 # HelloSDK
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
-## Requirements 
-
-Dart sdk: ">=2.17.0 <4.0.0"
-Flutter: ">=3.0.0"
-Android: minSdkVersion >= 19, compileSdk >= 34, AGP version >= 7.3.0 (use Android Studio - Android Gradle plugin Upgrade Assistant for help), support for androidx (see AndroidX Migration to migrate an existing app)
-iOS 9.0+: --ios-language swift, Xcode version >= 14.3
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+<img src="https://user-images.githubusercontent.com/60983778/207020610-9eb32587-7878-4604-bdaf-88ec87f634f8.jpg" height="400">
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Login or create account at MSG91 to use Hello SDK service.
 
-## Usage
+After login at MSG91 follow below steps to get your hello chat widget configuration.
+* From navigation drawer expand Manage > Inboxes > Select Inbox as Chat > Edit Widget.
+* Configure your widget and copy the **helloConfig** object.
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+## Installing
 
-```dart
-const like = 'sample';
+``` 
+flutter pub add flutter_hello_sdk
 ```
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
-# Hello_Flutter_SDK
