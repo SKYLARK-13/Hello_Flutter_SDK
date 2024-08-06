@@ -1,6 +1,6 @@
 name: flutter_hello_sdk
-description: "A new Flutter package project that integrates MSG91 Hello Chat widget in a WebView."
-version: 0.0.1
+description: "Flutter Chat Widget by MSG91"
+version: 0.0.3
 homepage: https://github.com/Walkover-Web-Solution/HelloSDK
 
 environment:
