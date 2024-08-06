@@ -54,6 +54,7 @@ class ChatWidget extends StatefulWidget {
 class ChatWidgetState extends State<ChatWidget> with WidgetsBindingObserver {
   InAppWebViewController? _webViewController;
   bool _isWidgetLoaded = false;
+  bool initialLoading = false;
   bool showView = false;
 
   Future<void> changeStatusBarColor() async {
@@ -166,35 +167,38 @@ class ChatWidgetState extends State<ChatWidget> with WidgetsBindingObserver {
             ],
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-          floatingActionButton: Visibility(
-            visible: !showView,
-            child: ElevatedButton(
-              style: widget.buttonStyle ??
-                  ElevatedButton.styleFrom(
-                    minimumSize: const Size(80, 45),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    backgroundColor: widget.widgetColor,
+          floatingActionButton: initialLoading
+              ? Visibility(
+                  visible: !showView,
+                  child: ElevatedButton(
+                    style: widget.buttonStyle ??
+                        ElevatedButton.styleFrom(
+                          minimumSize: const Size(80, 45),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          backgroundColor: widget.widgetColor,
+                        ),
+                    onPressed: () async {
+                      setState(() {
+                        _isWidgetLoaded = true;
+                        showView = !showView;
+                      });
+                      widget.onLaunchWidget();
+                      if (showView) {
+                        await changeStatusBarColor();
+                      } else {
+                        await FlutterStatusbarcolor.setStatusBarColor(
+                            Colors.transparent);
+                      }
+                    },
+                    child: const Text(
+                      "Chat",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
                   ),
-              onPressed: () async {
-                setState(() {
-                  _isWidgetLoaded = true;
-                  showView = !showView;
-                });
-                widget.onLaunchWidget();
-                if (showView) {
-                  await changeStatusBarColor();
-                } else {
-                  await FlutterStatusbarcolor.setStatusBarColor(
-                      Colors.transparent);
-                }
-              },
-              child: const Text(
-                "Chat",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-            ),
-          ),
+                )
+              : null,
         ),
       ),
     );
@@ -282,6 +286,11 @@ class ChatWidgetState extends State<ChatWidget> with WidgetsBindingObserver {
     ''';
 
     _webViewController?.evaluateJavascript(source: injectedScript);
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        initialLoading = true;
+      });
+    });
   }
 
   void _openChatWidget() {
