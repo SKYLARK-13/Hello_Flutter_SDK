@@ -22,30 +22,29 @@ class ChatWidget extends StatefulWidget {
   final String? country;
   final String? city;
   final String? region;
-  final ButtonStyle? buttonStyle;
   final VoidCallback onLaunchWidget;
   final VoidCallback onHideWidget;
+  final Widget button;
 
-  ChatWidget({
-    super.key,
-    required this.widgetToken,
-    required this.widgetColor,
-    required this.uniqueId,
-    this.hideLauncher = false,
-    this.showWidgetForm = false,
-    this.showCloseButton = true,
-    this.launchWidget = false,
-    this.showSendButton = true,
-    this.name,
-    this.number,
-    this.mail,
-    this.country,
-    this.city,
-    this.region,
-    this.buttonStyle,
-    required this.onLaunchWidget,
-    required this.onHideWidget,
-  });
+  ChatWidget(
+      {super.key,
+      required this.widgetToken,
+      required this.widgetColor,
+      required this.uniqueId,
+      this.hideLauncher = false,
+      this.showWidgetForm = false,
+      this.showCloseButton = true,
+      this.launchWidget = false,
+      this.showSendButton = true,
+      this.name,
+      this.number,
+      this.mail,
+      this.country,
+      this.city,
+      this.region,
+      required this.onLaunchWidget,
+      required this.onHideWidget,
+      required this.button});
 
   @override
   ChatWidgetState createState() => ChatWidgetState();
@@ -164,22 +163,11 @@ class ChatWidgetState extends State<ChatWidget> with WidgetsBindingObserver {
                   },
                 ),
               ),
-            ],
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-          floatingActionButton: initialLoading
-              ? Visibility(
+              if (initialLoading)
+                Visibility(
                   visible: !showView,
-                  child: ElevatedButton(
-                    style: widget.buttonStyle ??
-                        ElevatedButton.styleFrom(
-                          minimumSize: const Size(80, 45),
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          backgroundColor: widget.widgetColor,
-                        ),
-                    onPressed: () async {
+                  child: GestureDetector(
+                    onTap: () async {
                       setState(() {
                         _isWidgetLoaded = true;
                         showView = !showView;
@@ -192,13 +180,11 @@ class ChatWidgetState extends State<ChatWidget> with WidgetsBindingObserver {
                             Colors.transparent);
                       }
                     },
-                    child: const Text(
-                      "Chat",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
+                    child: widget.button ?? Container(),
                   ),
-                )
-              : null,
+                ),
+            ],
+          ),
         ),
       ),
     );

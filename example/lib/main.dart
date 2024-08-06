@@ -121,6 +121,30 @@ class _MyHomePageState extends State<MyHomePage> {
               initialEntries: [
                 OverlayEntry(
                   builder: (context) => ChatWidget(
+                    button: ClipPath(
+                      clipper: BirthDayCardClipper(),
+                      child: Container(
+                          height: 130,
+                          width: 80,
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.red,
+                                Colors.black,
+                              ],
+                            ),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              "Chat With Me",
+                              textAlign: TextAlign.center,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 12),
+                            ),
+                          )),
+                    ),
                     widgetToken: "ec5d6",
                     uniqueId: "AA_94bb_0jd",
                     name: "John Doe",
@@ -150,4 +174,28 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
   }
+}
+
+class BirthDayCardClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    double cornerRadius = 10.0;
+
+    path.moveTo(0, 0);
+    path.lineTo(0, size.height - cornerRadius);
+    path.quadraticBezierTo(0, size.height, cornerRadius, size.height);
+    path.lineTo(size.width / 2, size.height - cornerRadius * 2);
+    path.lineTo(size.width - cornerRadius, size.height);
+    path.quadraticBezierTo(
+        size.width, size.height, size.width, size.height - cornerRadius);
+    path.lineTo(size.width, 0);
+    path.lineTo(0, 0);
+
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
