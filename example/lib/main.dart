@@ -30,8 +30,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  double viewHeight = 100;
-  double viewWidth = 130;
+  /* -------------------------------------------------------------------------
+  These varible [viewHeight, viewWidth, bottomPosition, rightPosition] are 
+  important to handle the screen button and Chat Widget View
+  You can either handle this using set state or any other State Management you 
+  you use.
+
+  NOTE: I have used bottomPosition and rightPosition in variable also in 
+  Postion Widget you can use [Top, Bottom, Left, Right] any but if you have 
+  placed you button anyother place of the screen use the values accordingly
+  
+  */
+  double viewHeight = 80;
+  double viewWidth = 80;
+  double bottomPosition = 10;
+  double rightPosition = 0;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -112,90 +125,62 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         Positioned(
-          bottom: 0,
-          right: 0,
+          bottom: bottomPosition,
+          right: rightPosition,
           child: SizedBox(
             height: viewHeight,
             width: viewWidth,
-            child: Overlay(
-              initialEntries: [
-                OverlayEntry(
-                  builder: (context) => ChatWidget(
-                    button: ClipPath(
-                      clipper: BirthDayCardClipper(),
-                      child: Container(
-                          height: 130,
-                          width: 80,
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Colors.red,
-                                Colors.black,
-                              ],
-                            ),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              "Chat With Me",
-                              textAlign: TextAlign.center,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 12),
-                            ),
-                          )),
-                    ),
-                    widgetToken: "ec5d6",
-                    uniqueId: "AA_94bb_0jd",
-                    name: "John Doe",
-                    mail: "johndoe@example.com",
-                    number: "+1234567890",
-                    widgetColor: const Color.fromARGB(255, 209, 58, 12),
-                    onLaunchWidget: () {
-                      // set the view hight/width to full hight/width of the screen
-                      setState(() {
-                        viewHeight = MediaQuery.of(context).size.height;
-                        viewWidth = MediaQuery.of(context).size.width;
-                      });
-                    },
-                    onHideWidget: () {
-                      // set the button hight/width on the screen
-                      setState(() {
-                        viewHeight = 100;
-                        viewWidth = 130;
-                      });
-                    },
+            child: ChatWidget(
+              button: Container(
+                height: 80,
+                width: 80,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.red,
+                      Colors.black,
+                    ],
                   ),
-                )
-              ],
+                ),
+                child: const Center(
+                  child: Text(
+                    "Chat",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 12),
+                  ),
+                ),
+              ),
+              widgetToken: "ec5d6",
+              uniqueId: "AA_94bb_0jd",
+              name: "John Doe",
+              mail: "johndoe@example.com",
+              number: "+1234567890",
+              widgetColor: const Color.fromARGB(255, 209, 58, 12),
+              onLaunchWidget: () {
+                // set the view hight/width to full hight/width of the screen
+                setState(() {
+                  viewHeight = MediaQuery.of(context).size.height;
+                  viewWidth = MediaQuery.of(context).size.width;
+                  bottomPosition = 0;
+                  rightPosition = 0;
+                });
+              },
+              onHideWidget: () {
+                // set the button hight/width on the screen
+                setState(() {
+                  viewHeight = 80;
+                  viewWidth = 80;
+                  bottomPosition = 10;
+                  rightPosition = 0;
+                });
+              },
             ),
           ),
         ),
       ],
     );
   }
-}
-
-class BirthDayCardClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    var path = Path();
-    double cornerRadius = 10.0;
-
-    path.moveTo(0, 0);
-    path.lineTo(0, size.height - cornerRadius);
-    path.quadraticBezierTo(0, size.height, cornerRadius, size.height);
-    path.lineTo(size.width / 2, size.height - cornerRadius * 2);
-    path.lineTo(size.width - cornerRadius, size.height);
-    path.quadraticBezierTo(
-        size.width, size.height, size.width, size.height - cornerRadius);
-    path.lineTo(size.width, 0);
-    path.lineTo(0, 0);
-
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
